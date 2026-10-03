@@ -336,10 +336,13 @@ static KYTY_SYSV_ABI void RunEntry(uint64_t addr, EntryParams* params, atexit_fu
 #if defined(__APPLE__) || KYTY_PLATFORM == KYTY_PLATFORM_WINDOWS
 	asm volatile("pushq %%r12\n\t"
 	             "pushq %%r13\n\t"
+	             "movq %%rsp, %%r13\n\t"
+	             "andq $-16, %%rsp\n\t"
 	             "movq %%rbp, %%r12\n\t"
 	             "movq %[guest_rbp], %%rbp\n\t"
 	             "callq *%[func]\n\t"
 	             "movq %%r12, %%rbp\n\t"
+	             "movq %%r13, %%rsp\n\t"
 	             "popq %%r13\n\t"
 	             "popq %%r12\n\t"
 	             :
