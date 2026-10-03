@@ -159,12 +159,12 @@ static uint64_t AllocateUnresolvedImportThunk(uint64_t record_id) {
 	                                        g_unresolved_stub_thunk_offset);
 	g_unresolved_stub_thunk_offset += thunk_size;
 
-	uint8_t bytes[thunk_size] = {
-	    0x48, 0x83, 0xec, 0x08,               // sub rsp, 8
+uint8_t bytes[thunk_size] = {
+	    0x90, 0x90, 0x90, 0x90,               // nop (was sub rsp, 8)
 	    0x48, 0xbf, 0, 0, 0, 0, 0, 0, 0, 0, // mov rdi, record_id
 	    0x48, 0xb8, 0, 0, 0, 0, 0, 0, 0, 0, // mov rax, UnresolvedImportStub
 	    0xff, 0xd0,                           // call rax
-	    0x48, 0x83, 0xc4, 0x08,               // add rsp, 8
+	    0x90, 0x90, 0x90, 0x90,               // nop (was add rsp, 8)
 	    0x0f, 0x57, 0xc0,                     // xorps xmm0, xmm0
 	    0xc3,                                 // ret
 	};
